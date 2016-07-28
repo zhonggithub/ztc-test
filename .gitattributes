@@ -3,7 +3,7 @@
 .idea
 # Custom for Visual Studio
 *.cs     diff=csharp
-
+node_modules/
 # Standard to msysgit
 *.doc	 diff=astextplain
 *.DOC	 diff=astextplain

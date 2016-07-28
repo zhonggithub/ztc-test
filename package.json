@@ -1,8 +1,8 @@
 {
-  "name": "uwifiGaSystem",
+  "name": "ztc-test",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "webServer.js",
   "scripts": {
     "test": "mocha --opts ./tests/"
   },
@@ -30,6 +30,9 @@
     "xtpl": "^3.2.0"
   },
   "devDependencies": {
+    "babel-core": "^6.11.4",
+    "babel-polyfill": "^6.9.1",
+    "babel-preset-es2015": "^6.9.0",
     "chai": "^3.5.0",
     "co-mocha": "^1.1.2",
     "co-supertest": "0.0.10",

@@ -10,3 +10,14 @@
 'use strict';
 const ZCommon = require('../../../common/ZCommon');
 const ZRresourceOperator = require('../../../common/ZResourceOperator');
+
+class AccountController{
+    constructor(){
+
+    }
+    async create(ctx, next){
+        
+    }
+}
+
+module.exports = AccountController;

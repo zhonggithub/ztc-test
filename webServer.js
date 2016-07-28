@@ -14,7 +14,6 @@ const convert = require('koa-convert');
 const bodyparser = require('koa-bodyparser')();
 const json = require('koa-json');
 const router = require('./router');
-const config = require('./common/config');
 const logger = require('koa-logger');
 const xtpl = require('xtpl/lib/koa');
 
@@ -25,6 +24,13 @@ const xtpl = require('xtpl/lib/koa');
 //     this.set('X-Response-Time', ms + 'ms');
 //     console.log('%s %s %s ms', this.method, this.path, ms);
 // });
+
+app.use(async (ctx, next) => {
+    const start = new Date();
+    await next();
+    const ms = new Date() - start;
+    console.log(`${ctx.method} ${ctx.url} - ${ms}ms`);
+});
 
 xtpl(app, {views : './public/html'});
 app.use(convert(logger()));
@@ -40,4 +46,4 @@ app.use(function*(next){
 
 app.use(router.routes());
 app.use(router.allowedMethods());
-app.listen(config.port);
+app.listen(3000);
