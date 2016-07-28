@@ -1,0 +1,8 @@
+.idea
+node_modules
+public/dist
+log
+public/upload
+npm-debug.log
+sftp-config.json
+public/pre_dist
