@@ -12,8 +12,7 @@ const crypto = require('crypto');
 const uuid = require('node-uuid');
 var util = require('util');
 var assert = require('assert');
-var config = require('./config');
-var log = require('./log');
+var logger = require('./log');
 
 class Common{
     constructor(consoleDebug){
@@ -80,7 +79,7 @@ class Common{
         let logString = 'status: ' + status + ' name: ' + body.name + ' code: '
             + body.code + ' message: ' + body.message + ' description: ' + body.description;
         this.consoleLog(logString);
-        log.getInstance().logger().error(error?error:body);
+        logger.error(error?error:body);
     }
 
     expressErrorReturn(res, status, error) {
@@ -97,7 +96,7 @@ class Common{
         let logString = 'status: ' + status + ' name: ' + body.name + ' code: '
             + body.code + ' message: ' + body.message + ' description: ' + body.description;
         this.consoleLog(logString);
-        log.getInstance().logger().error(error?error:body);
+        logger.error(error?error:body);
     }
 
     filterData(dataInfo, excludeAttribute) {
