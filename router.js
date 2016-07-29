@@ -15,13 +15,16 @@ const co = require('co');
 const accounts = require('./modules/account/controllers/AccountController');
 
 /* @ accounts (账号)*/
-const baseAccountURL = '/api/:version/accounts';
-router.post(baseAccountURL, co.wrap(accounts.create));
-router.get(baseAccountURL + '/:accountUUID', co.wrap(accounts.retrieve));
-router.get(baseAccountURL, co.wrap(accounts.list));
-router.put(baseAccountURL + '/:accountUUID', co.wrap(accounts.update));
-router.delete(baseAccountURL + '/:accountUUID', co.wrap(accounts.delete));
-router.post(baseAccountURL + '/loginAttempts', co.wrap(accounts.loginAttempts));
-router.post(baseAccountURL + '/:accountUUID', co.wrap(accounts.restStatus));
+const baseAccountURL = '/';
+router.post(baseAccountURL, async (ctx, next)=>{
+    console.log('=====');
+    let n = await accounts.create(ctx.body);
+});
+// router.get(baseAccountURL + '/:accountUUID', co.wrap(accounts.retrieve));
+// router.get(baseAccountURL, co.wrap(accounts.list));
+// router.put(baseAccountURL + '/:accountUUID', co.wrap(accounts.update));
+// router.delete(baseAccountURL + '/:accountUUID', co.wrap(accounts.delete));
+// router.post(baseAccountURL + '/loginAttempts', co.wrap(accounts.loginAttempts));
+// router.post(baseAccountURL + '/:accountUUID', co.wrap(accounts.restStatus));
 
 module.exports = router;

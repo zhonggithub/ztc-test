@@ -33,6 +33,7 @@
     "babel-core": "^6.11.4",
     "babel-polyfill": "^6.9.1",
     "babel-preset-es2015": "^6.9.0",
+    "babel-preset-stage-3": "^6.11.0",
     "chai": "^3.5.0",
     "co-mocha": "^1.1.2",
     "co-supertest": "0.0.10",
