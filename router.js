@@ -18,7 +18,7 @@ const accounts = require('./modules/account/controllers/AccountController');
 const baseAccountURL = '/api/:version/accounts';
 router.post(baseAccountURL, accounts.create);
 router.get(baseAccountURL + '/:accountUUID', accounts.retrieve);
-// router.get(baseAccountURL, co.wrap(accounts.list));
+router.get(baseAccountURL, accounts.list);
 router.put(baseAccountURL + '/:accountUUID', accounts.update);
 // router.delete(baseAccountURL + '/:accountUUID', co.wrap(accounts.delete));
 // router.post(baseAccountURL + '/loginAttempts', co.wrap(accounts.loginAttempts));

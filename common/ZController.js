@@ -128,7 +128,7 @@ class ZController{
             }
             
             let result = await prp.rp.updateById(body.id, body);
-            let retData = prp.retData(result);
+            let retData = prp.retData(result[0]);
             common.packageResOfUS(ctx.response, retData);
         }catch(err){
             common.koaErrorReturn(ctx.response, err.status, err);

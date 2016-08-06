@@ -51,4 +51,14 @@ function retData(body){
     return body;
 }
 
-module.exports = new ZController(accountProxy, isValidData, isExist, retData, null, null, null);
+function retListData(query, items, size){
+    return {
+        href: 'http://localhost:3000/accounts',
+        offset: query.offset ? query.offset : 0,
+        limit : query.limit ? query.limit : 25,
+        size: size,
+        items : items
+    }
+}
+
+module.exports = new ZController(accountProxy, isValidData, isExist, retData, retListData, null, null);
