@@ -67,6 +67,8 @@ class ZController{
     }
 
     async create(ctx, next) {
+        common.consoleLog(ctx.request.body);
+
         let body = ctx.request.body;
         let judge = prp.isValidData(body, true);
         if(!judge.is){
@@ -90,6 +92,7 @@ class ZController{
     }
 
     async update(ctx, next) {
+        common.consoleLog(ctx.request.body);
         let body = ctx.request.body;
         let tmp = ctx.path.split('/');
         if(tmp.length == 0){
@@ -136,6 +139,7 @@ class ZController{
     }
 
     async retrieve(ctx, next) {
+        common.consoleLog(ctx.request.query);
         let judge = common.isValidQueryParams(ctx.request.query, prp.isValidQueryParams, null);
         if(!judge.is){
             common.koaErrorReturn(ctx.response, judge.error.status, judge.error);
