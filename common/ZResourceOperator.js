@@ -13,6 +13,15 @@ let packageOfOperatorImp = {
 };
 let imp = {};
 
+function convert2DBInfo(logicInfo){
+    let dbInfo = (imp.ResourceDBInfo ? new imp.ResourceDBInfo(logicInfo, true) : logicInfo);
+    return dbInfo;
+}
+
+function convert2LogicInfo(dbInfo){
+    return (imp.ResourceLogicInfo ? new imp.ResourceLogicInfo(dbInfo) : dbInfo);
+}
+
 class ZResourceOperator{
     constructor(resourceDB, ResourceLogicInfo, ResourceDBInfo, ResourceUpdateDBInfo, convertQueryCriteria, convertCountCriteria){
         packageOfOperatorImp.resourceDB = resourceDB;
@@ -22,95 +31,90 @@ class ZResourceOperator{
         packageOfOperatorImp.ResourceDBInfo = ResourceDBInfo;
         packageOfOperatorImp.ResourceUpdateDBInfo = ResourceUpdateDBInfo ? ResourceUpdateDBInfo : ResourceDBInfo;
 
-        imp = new Proxy(packageOfOperatorImp, {
-            get: function(target, property) {
-                if (property in target) {
-                    if(target[property] == undefined && target[property] == '')
-                        return function(data){return data};
-                    else
-                        return target[property];
-                } else {
-                    throw new ReferenceError("Property \"" + property + "\" does not exist.");
-                }
-            }
-        });
+        imp = packageOfOperatorImp;
+
+        // imp = new Proxy(packageOfOperatorImp, {
+        //     get: function(target, property) {
+        //         if (property in target) {
+        //             if(target[property] == undefined && target[property] == '')
+        //                 return function(data){return data};
+        //             else
+        //                 return target[property];
+        //         } else {
+        //             throw new ReferenceError("Property \"" + property + "\" does not exist.");
+        //         }
+        //     }
+        // });
     }
 
-    createResource(logicInfo, callback) {
-        let dbInfo = new imp.ResourceDBInfo(logicInfo, true);
-        imp.resourceDB.createResource(dbInfo, function (error, result) {
-            if (error) {
-                callback(error);
-                return;
-            }
-            callback(null, new imp.ResourceLogicInfo(result));
-        });
+    async create(logicInfo){
+        try{
+            let dbInfo = convert2DBInfo(logicInfo);
+            let result = await imp.resourceDB.createResource(dbInfo);
+            return Promise.resolve(convert2LogicInfo(result));
+        }catch(error){
+            return Promise.reject(error);
+        }
     }
 
-    updateResource(logicInfo, callback){
-        let dbInfo = new imp.ResourceDBInfo(logicInfo);
-        imp.resourceDB.updateResource(dbInfo, function (error, result) {
-            if (error) {
-                callback(error);
-                return;
-            }
+    async updateById(id, logicInfo){
+        try{
+            let dbInfo = convert2DBInfo(logicInfo);
+            let result = await imp.resourceDB.updateResource({id:id}, dbInfo);
+            return Promise.resolve(convert2LogicInfo(result));
+        }catch(error){
+            return Promise.reject(error);
+        }
+    }
+
+    async retrieveById(id){
+        try{
+            let result = await imp.resourceDB.retrieveResource({id: id});
+            return Promise.resolve(convert2LogicInfo(result));
+        }catch(error){
+            return Promise.reject(error);
+        }
+    }
+
+    async deleteById(id){
+        try{
+            let result = await imp.resourceDB.deleteResource({id: id});
+            return Promise.resolve(result);
+        }catch(error){
+            return Promise.reject(error);
+        }
+    }
+
+    async logicDeleteById(id){
+        try{
+            let result = await imp.resourceDB.deleteResource({id: id});
+            return Promise.resolve(result);
+        }catch(error){
+            return Promise.reject(error);
+        }
+    }
+
+    async find(criteria) {
+        try{
+            let dbCriteria = imp.convertQueryCriteria(criteria);
+            let results = await imp.resourceDB.findResource(dbCriteria);
             let infoArray = new Array();
-            result.forEach(function (element) {
-                infoArray.push(new imp.ResourceLogicInfo(element))
-            });
-            callback(null, infoArray);
-        });
-    }
-
-    retrieveResource(id, callback){
-        imp.resourceDB.retrieveResource({id: id}, function(error, result){
-            if(error){
-                callback(error);
-                return;
+            for(let i = 0; i < results.length; ++i){
+                infoArray.push(convert2LogicInfo(results[i]));
             }
-            callback(null, result ? new imp.ResourceLogicInfo(result) : result)
-        });
+            return Promise.resolve(infoArray);
+        }catch(error){
+            return Promise.reject(error);
+        }
     }
-
-    deleteResource(id, callback){
-        imp.resourceDB.deleteResource({id: id}, function(error, result){
-            if(error){
-                callback(error);
-                return;
-            }
-            callback(null, result)
-        });
-    }
-
-    logicDeleteResource(id, callback){
-        imp.resourceDB.logicDeletePlace({id: id}, function(error, result){
-            if(error){
-                callback(error);
-                return;
-            }
-            callback(null, result)
-        });
-    }
-
-    findResource(criteria, callback) {
-        let dbCriteria = imp.convertQueryCriteria(criteria);
-        imp.resourceDB.findResource(dbCriteria, function (error, result) {
-            if (error) {
-                callback(error);
-                return;
-            }
-            let infoArray = new Array();
-            result.forEach(function (element) {
-                infoArray.push(new imp.ResourceLogicInfo(element))
-            });
-            callback(null, infoArray);
-        });
-    }
-    count(criteria, callback){
-        let dbCriteria = imp.convertCountCriteria(criteria);
-        imp.resourceDB.count(dbCriteria, function(error, size){
-            callback(error, size);
-        });
+    async count(criteria){
+        try{
+            let dbCriteria = imp.convertCountCriteria(criteria);
+            let size = await imp.resourceDB.count(dbCriteria);
+            return Promise.resolve(size);
+        }catch(error){
+            return Promise.reject(error);
+        }
     }
 }
 module.exports = ZResourceOperator;

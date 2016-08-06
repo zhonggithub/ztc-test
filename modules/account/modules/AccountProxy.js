@@ -10,24 +10,44 @@
 
 const ZRresourceOperator = require('../../../common/ZResourceOperator');
 const orm = require('../../MongodbOrm');
+const ZResourceDB = require('../../../common/ZResourceDB');
+const ZCommon = require('../../../common/ZCommon');
+const common = new ZCommon();
+const accountDB = new ZResourceDB(getAccountModule);
 
 function getAccountModule(){
     return orm.collections().tb_account;
 }
 
-class AccountProxy extends ZRresourceOperator{
-    constructor(){
-        super();
-    }
-
-    async create(dbInfo, callback){
-        try{
-            let result = await getAccountModule().create(dbInfo);
-            callback(null, result);
-        }catch(error){
-            callback(error);
+function convertQueryCriteria(criteria){
+    let tmpCriteria = JSON.parse(JSON.stringify(criteria));
+    let dbCriteria = common.convertQueryCriteria(tmpCriteria);
+    for (let condition in tmpCriteria) {
+        switch (condition) {
+            case "username":
+            {
+                if (tmpCriteria[condition].indexOf('*') == -1){
+                    dbCriteria['canton.' + condition] = tmpCriteria[condition];
+                }
+                else {
+                    let reg = /\*/g;
+                    let str = criteria[condition].replace(reg, '%');
+                    dbCriteria['canton.' + condition] = {'like': str};
+                }
+            }break;
+            default:
+                dbCriteria[condition] = tmpCriteria[condition];
+                break;
         }
     }
+
+    dbCriteria['deleteFlag'] = {'!': 1};
+    return dbCriteria;
 }
 
-module.exports = new AccountProxy();
+function convertCountCriteria(criteria){
+    let dbCriteria = common.convertCountCriteria(criteria);
+    return dbCriteria;
+}
+
+module.exports = new ZRresourceOperator(accountDB, null, null, null, convertQueryCriteria, convertCountCriteria);

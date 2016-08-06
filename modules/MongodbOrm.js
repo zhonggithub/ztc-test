@@ -76,8 +76,6 @@ mongodbOrm.loadCollection({
     identity: 'tb_account',
     tableName: 'tb_account',
     connection: 'mongodb',
-    autoCreatedAt: false,
-    autoUpdatedAt: false,
     schema: true,
     attributes: {
         username : {
@@ -92,17 +90,13 @@ mongodbOrm.loadCollection({
             type: 'string',
             defaultsTo: ''
         },
-        createdAt: {
-            type: 'date',
-            defaultsTo: ''
-        },
-        modifiedAt: {
-            type: 'date',
-            defaultsTo: ''
-        },
         status: {
             type: 'integer',
-            defaultsTo: ''
+            defaultsTo: 0
+        },
+        deleteFlag : {
+            type: 'integer',
+            defaultsTo: 0
         }
     }
 });

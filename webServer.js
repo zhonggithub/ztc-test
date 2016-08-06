@@ -17,14 +17,6 @@ const router = require('./router');
 const logger = require('koa-logger');
 const xtpl = require('xtpl/lib/koa');
 
-// app.use(function*(next){
-//     var start = new Date;
-//     yield next;
-//     var ms = new Date - start;
-//     this.set('X-Response-Time', ms + 'ms');
-//     console.log('%s %s %s ms', this.method, this.path, ms);
-// });
-
 app.use(async (ctx, next) => {
     const start = new Date();
     await next();
@@ -37,12 +29,12 @@ app.use(convert(logger()));
 app.use(convert(bodyparser));
 app.use(convert(json()));
 
-app.use(function*(next){
-    if(this.path == '/')
-        yield this.render('test',{"title":"xtemplate demo"});
-    else
-        yield next;
-});
+// app.use(function*(next){
+//     if(this.path == '/')
+//         yield this.render('test',{"title":"xtemplate demo"});
+//     else
+//         yield next;
+// });
 
 app.use(router.routes());
 app.use(router.allowedMethods());

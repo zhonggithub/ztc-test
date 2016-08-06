@@ -307,6 +307,16 @@ class Common{
         return error;
     }
 
+    error500(){
+        let error = new Error();
+        error.name = 'InternalError';
+        error.status = 500;
+        error.code = 9999;
+        error.message = errorCodeTable.errorCode2Text(error.code);
+        error.description = '';
+        return error;
+    }
+
     retEmptyAttribute(value){
         assert(this.isJson(value));
         let retInfo = new Array();

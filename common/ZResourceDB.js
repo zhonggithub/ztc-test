@@ -17,103 +17,84 @@ class ZResourceDB{
         packageOfResourceDBImp.getModule = getModuleFun;
     }
 
-    createResource(dbInfo, callback) {
-        packageOfResourceDBImp.getModule().create(dbInfo, function (err, model) {
-            if (err) {
-                logger.error(err);
-                callback(common.dbError(err));
-                return;
-            }
-            callback(null, model);
-        });
+    async createResource(dbInfo, callback) {
+        try{
+            let result = await packageOfResourceDBImp.getModule().create(dbInfo);
+            return Promise.resolve(result);
+        }catch(err){
+            logger.error(err);
+            return Promise.reject(error);
+        }
     }
 
-    updateResource(criteria, dbInfo, callback) {
-        packageOfResourceDBImp.getModule().update(criteria, dbInfo, function (err, model) {
-            if (err) {
-                logger.error(err);
-                callback(common.dbError(err));
-                return;
-            }
-            callback(null, model);
-        });
+    async updateResource(criteria, dbInfo) {
+        try{
+            let result = await packageOfResourceDBImp.getModule().update(criteria, dbInfo);
+            return Promise.resolve(result);
+        }catch(err){
+            logger.error(err);
+            return Promise.reject(error);
+        }
     }
 
-    resetStatus(criteria, dbInfo, callback){
-        packageOfResourceDBImp.getModule().update(criteria, dbInfo, function (err, model) {
-            if (err) {
-                logger.error(err);
-                callback(common.dbError(err));
-                return;
-            }
-            callback(null, model);
-        });
+    async retrieveResource(criteria) {
+        try{
+            let result = await packageOfResourceDBImp.getModule().findOne(criteria);
+            return Promise.resolve(result);
+        }catch(err){
+            logger.error(err);
+            return Promise.reject(error);
+        }
     }
 
-    retrieveResource(criteria, callback) {
-        packageOfResourceDBImp.getModule().findOne(criteria, function (err, model) {
-            if (err) {
-                logger.error(err);
-                callback(common.dbError(err));
-                return;
-            }
-            callback(null, model);
-        });
+    async deleteResource(criteria) {
+        try{
+            let result = await packageOfResourceDBImp.getModule().destroy(criteria);
+            return Promise.resolve(result);
+        }catch(err) {
+            logger.error(err);
+            return Promise.reject(error);
+        }
     }
 
-    deleteResource(criteria, callback) {
-        packageOfResourceDBImp.getModule().destroy(criteria, function (err) {
-            if (err) {
-                logger.error(err);
-                callback(common.dbError(err));
-                return;
-            }
-            callback(null, true);
-        });
+    async logicDeleteResource(criteria){
+        try{
+            let result = await packageOfResourceDBImp.getModule().update(criteria, {deleteFlag: 1});
+            return Promise.resolve(result);
+        }catch(err) {
+            logger.error(err);
+            return Promise.reject(error);
+        }
     }
 
-    logicDeleteResource(criteria, callback){
-        packageOfResourceDBImp.getModule().update(criteria, {deleteFlag: 1}, function (err, model) {
-            if (err) {
-                logger.error(err);
-                callback(common.dbError(err));
-                return;
-            }
-            callback(null, model);
-        });
+    async queryResource(queryStr) {
+        try{
+            let result = await packageOfResourceDBImp.getModule().query(queryStr);
+            return Promise.resolve(result);
+        }catch(err) {
+            logger.error(err);
+            return Promise.reject(error);
+        }
     }
 
-    queryResource(queryStr, callback) {
-        packageOfResourceDBImp.getModule().query(queryStr, function (err, model) {
-            if (err) {
-                logger.error(err);
-                callback(common.dbError(err));
-                return;
-            }
-            callback(null, model);
-        });
+    async findResource(criteria){
+        try{
+            let result = await packageOfResourceDBImp.getModule().find(criteria);
+            return Promise.resolve(result);
+        }catch(err) {
+            logger.error(err);
+            return Promise.reject(error);
+        }
     }
 
-    findResource(criteria, callback){
-        packageOfResourceDBImp.getModule().find(criteria, function(err, model){
-            if(err) {
-                logger.error(err);
-                callback(common.dbError(err));
-                return;
-            }
-            callback(null, model);
-        });
-    }
-
-    count(criteria, callback){
-        packageOfResourceDBImp.getModule().count(criteria, function(err, model){
-            if(err){
-                logger.error(err);
-                callback(common.dbError(err));
-                return;
-            }
-            callback(null, model);
-        });
+    async count(criteria){
+        try{
+            let result = await packageOfResourceDBImp.getModule().count(criteria);
+            return Promise.resolve(result);
+        }catch(err) {
+            logger.error(err);
+            return Promise.reject(error);
+        }
     }
 }
 module.exports = ZResourceDB;
