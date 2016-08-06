@@ -20,6 +20,6 @@ router.post(baseAccountURL, accounts.create);
 router.get(baseAccountURL + '/:accountUUID', accounts.retrieve);
 router.get(baseAccountURL, accounts.list);
 router.put(baseAccountURL + '/:accountUUID', accounts.update);
-router.delete(baseAccountURL + '/:accountUUID', accounts.delete);
+router.delete(baseAccountURL + '/:accountUUID', accounts.logicDelete);
 
 module.exports = router;

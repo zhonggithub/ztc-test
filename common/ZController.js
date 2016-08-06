@@ -153,6 +153,12 @@ class ZController{
         let id = tmp[tmp.length - 1];
         try{
             let result = await prp.rp.retrieveById(id);
+            if(!result){
+                let err = common.error404();
+                err.description = 'You can\'t to delete resource because the resource of url(' + ctx.url + ') is not exist.';
+                common.koaErrorReturn(ctx.response, err.status, err);
+                return;
+            }
             let retData = prp.retData(result);
             common.packageResOfCS(ctx.response, retData);
         }catch(err){
@@ -223,6 +229,38 @@ class ZController{
             common.koaErrorReturn(ctx.response, err.status, err);
         }
     }
+    
+    async logicDelete(ctx, next) {
+        let tmp = ctx.path.split('/');
+        if(tmp.length == 0){
+            let err = common.error500();
+            err.description = 'the path is error.';
+            common.koaErrorReturn(ctx.response, err.status, err);
+            return;
+        }
+
+        let id = tmp[tmp.length - 1];
+
+        try{
+            let infos = await prp.rp.find({id: id});
+            if(infos.length == 0){
+                let err = common.error404();
+                err.description = 'You can\'t to delete resource because the resource of url(' + ctx.url + ') is not exist.';
+                common.koaErrorReturn(ctx.response, err.status, err);
+                return;
+            }
+            if(infos.length != 1){
+                let err = common.error409();
+                err.description = 'You can\'t to delete resource because multiple resources exist when query by the resource of url(' + ctx.url+ ').';
+                common.koaErrorReturn(ctx.response, err.status, err);
+                return;
+            }
+            let result = await prp.rp.logicDeleteById(id);
+            common.packageResOfDS(ctx.response, result);
+        }catch(err){
+            common.koaErrorReturn(ctx.response, err.status, err);
+        }
+    }
 
     async list(ctx, next){
         common.consoleLog(ctx.request.query);
@@ -232,6 +270,8 @@ class ZController{
             return;
         }
         try{
+            ctx.request.query['offset'] = common.ifReturnNum(ctx.request.query.offset, 0);
+            ctx.request.query['limit'] = common.ifReturnNum(ctx.request.query.limit, 25);
             let result = await prp.rp.find(ctx.request.query);
             let size = await prp.rp.count(ctx.request.query);
             let retData = prp.retListData(ctx.request.query, result, size);

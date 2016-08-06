@@ -21,7 +21,9 @@ function getAccountModule(){
 
 function convertQueryCriteria(criteria){
     let tmpCriteria = JSON.parse(JSON.stringify(criteria));
-    let dbCriteria = common.convertQueryCriteria(tmpCriteria);
+    tmpCriteria = common.convertQueryCriteria(tmpCriteria);
+    let dbCriteria = tmpCriteria.dstCriteria;
+    tmpCriteria = tmpCriteria.sourceCriteria;
     for (let condition in tmpCriteria) {
         switch (condition) {
             case "username":
@@ -40,14 +42,12 @@ function convertQueryCriteria(criteria){
                 break;
         }
     }
-
-    dbCriteria['deleteFlag'] = {'!': 1};
+    
     return dbCriteria;
 }
 
 function convertCountCriteria(criteria){
     let dbCriteria = common.convertCountCriteria(criteria);
-    dbCriteria['deleteFlag'] = {'!': 1};
     return dbCriteria;
 }
 

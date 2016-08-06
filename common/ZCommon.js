@@ -430,7 +430,8 @@ class Common{
         //     }
         // });
 
-        return dbCriteria;
+        dbCriteria['deleteFlag'] = {'!': 1};
+        return {dstCriteria: dbCriteria, sourceCriteria: criteria};
     }
 
     convertCountCriteria(criteria, isDefault){
@@ -504,7 +505,7 @@ class Common{
                     break;
             }
         }
-
+        dbCriteria['deleteFlag'] = {'!': 1};
         return dbCriteria;
     }
 

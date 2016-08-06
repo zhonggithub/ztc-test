@@ -87,7 +87,7 @@ class ZResourceOperator{
 
     async logicDeleteById(id){
         try{
-            let result = await imp.resourceDB.deleteResource({id: id});
+            let result = await imp.resourceDB.logicDeleteResource({id: id});
             return Promise.resolve(result);
         }catch(error){
             return Promise.reject(error);

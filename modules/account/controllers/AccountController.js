@@ -47,6 +47,7 @@ async function isExist(info){
 }
 
 function retData(body){
+    body = common.filterData(body, ['deleteFlag']);
     body.href = 'http://localhost:3000/api/v1/accounts/' + body.id;
     return body;
 }
