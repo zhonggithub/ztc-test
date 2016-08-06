@@ -11,7 +11,6 @@
 
 const Router = require('koa-router');
 const router = new Router();
-const co = require('co');
 const accounts = require('./modules/account/controllers/AccountController');
 
 /* @ accounts (账号)*/

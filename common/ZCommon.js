@@ -442,9 +442,10 @@ class Common{
                 case "limit":
                 case "offset":
                 case "orderBy":
+                case "expand":
+                    break;
                 case "createdAt":
                 case "modifiedAt":
-                case "expand":
                 {
                     dbCriteria[condition] = {};
                     let beginStr = criteria[condition][0];
