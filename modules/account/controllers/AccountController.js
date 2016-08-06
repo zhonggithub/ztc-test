@@ -47,18 +47,13 @@ async function isExist(info){
 }
 
 function retData(body){
-    body.href = 'http://localhost:3000/accounts/' + body.id;
+    body.href = 'http://localhost:3000/api/v1/accounts/' + body.id;
     return body;
 }
 
 function retListData(query, items, size){
-    return {
-        href: 'http://localhost:3000/accounts',
-        offset: query.offset ? query.offset : 0,
-        limit : query.limit ? query.limit : 25,
-        size: size,
-        items : items
-    }
+    let href =  'http://localhost:3000/api/v1/accounts';
+    return common.retListData(query, items, size, retData, href);
 }
 
 module.exports = new ZController(accountProxy, isValidData, isExist, retData, retListData, null, null);

@@ -47,6 +47,7 @@ function convertQueryCriteria(criteria){
 
 function convertCountCriteria(criteria){
     let dbCriteria = common.convertCountCriteria(criteria);
+    dbCriteria['deleteFlag'] = {'!': 1};
     return dbCriteria;
 }
 
