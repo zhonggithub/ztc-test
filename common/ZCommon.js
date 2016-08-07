@@ -429,8 +429,6 @@ class Common{
         //         delete criteria[item];
         //     }
         // });
-
-        dbCriteria['deleteFlag'] = {'!': 1};
         return {dstCriteria: dbCriteria, sourceCriteria: criteria};
     }
 
@@ -506,7 +504,6 @@ class Common{
                     break;
             }
         }
-        dbCriteria['deleteFlag'] = {'!': 1};
         return dbCriteria;
     }
 

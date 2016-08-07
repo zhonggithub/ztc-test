@@ -42,12 +42,13 @@ function convertQueryCriteria(criteria){
                 break;
         }
     }
-    
+    dbCriteria['deleteFlag'] = {'!': 1};
     return dbCriteria;
 }
 
 function convertCountCriteria(criteria){
     let dbCriteria = common.convertCountCriteria(criteria);
+    dbCriteria['deleteFlag'] = {'!': 1};
     return dbCriteria;
 }
 
