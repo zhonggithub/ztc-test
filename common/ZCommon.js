@@ -354,7 +354,7 @@ class Common{
                     filterAttributeArray.push(condition);
                 }break;
                 case "createdAt":
-                case "modifiedAt":
+                case "updatedAt":
                 {
                     dbCriteria[condition] = {};
                     let beginStr = criteria[condition][0];
@@ -443,7 +443,7 @@ class Common{
                 case "expand":
                     break;
                 case "createdAt":
-                case "modifiedAt":
+                case "updatedAt":
                 {
                     dbCriteria[condition] = {};
                     let beginStr = criteria[condition][0];
